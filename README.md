@@ -4,3 +4,6 @@
 3) cd move_it/
 4) source devel/setup.bash
 5) roslaunch zavrsni program1.launch
+
+
+nemojte jos clonati, nesto fali 
