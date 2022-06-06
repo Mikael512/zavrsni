@@ -6,4 +6,3 @@
 5) roslaunch zavrsni program1.launch
 
 
-nemojte jos clonati, nesto fali 
