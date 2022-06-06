@@ -103,7 +103,7 @@ Visualization Manager:
       Environment:
         Alpha: 1
         Display Mode: Monitor
-        Monitor Namespace: tesseract_ros_examples
+        Monitor Namespace: zavrsni
         Show All Links: true
         Show Collision: false
         Show Highlights: true
