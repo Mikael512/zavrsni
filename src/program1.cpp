@@ -62,13 +62,17 @@ tesseract_environment::Command::Ptr Program1::addSphere()
   return std::make_shared<tesseract_environment::AddLinkCommand>(link_sphere, joint_sphere);
 }
 
-bool Program1::run()
+tesseract_common::JointTrajectory Program1::run()
 {
   //Add sphere to environment
   Command::Ptr cmd = addSphere();
+  
   if (!env_->applyCommand(cmd))
-    return false;
-
+  {
+    tesseract_common::JointTrajectory empty_traj;
+    return empty_traj;
+  }
+  
   if (plotter_ != nullptr)
     plotter_->waitForConnection();
 
@@ -135,6 +139,7 @@ bool Program1::run()
   ProcessPlanningRequest request;
   if (ifopt_)
   {
+    std::cout << "using ifopt!\n\n";
     auto composite_profile = std::make_shared<TrajOptIfoptDefaultCompositeProfile>();
     composite_profile->collision_cost_config->type = tesseract_collision::CollisionEvaluatorType::LVS_DISCRETE;
     composite_profile->collision_cost_config->contact_manager_config = tesseract_collision::ContactManagerConfig(0.01);
@@ -163,6 +168,7 @@ bool Program1::run()
   }
   else
   {
+    std::cout << "not using ifopt!\n\n";
     auto composite_profile = std::make_shared<TrajOptDefaultCompositeProfile>();
     composite_profile->collision_cost_config.enabled = true;
     composite_profile->collision_cost_config.type = trajopt::CollisionEvaluatorType::DISCRETE_CONTINUOUS;
@@ -209,13 +215,14 @@ bool Program1::run()
   stopwatch.stop();
   CONSOLE_BRIDGE_logInform("Planning took %f seconds.", stopwatch.elapsedSeconds());
 
+  tesseract_common::JointTrajectory trajectory;
   // Plot Process Trajectory
   if (plotter_ != nullptr && plotter_->isConnected())
   {
     plotter_->waitForInput();
     const auto& ci = response.problem->results->as<CompositeInstruction>();
     tesseract_common::Toolpath toolpath = toToolpath(ci, *env_);
-    tesseract_common::JointTrajectory trajectory = toJointTrajectory(ci);
+    trajectory = toJointTrajectory(ci);
     auto state_solver = env_->getStateSolver();
 
     plotter_->plotMarker(ToolpathMarker(toolpath));
@@ -223,6 +230,7 @@ bool Program1::run()
   }
 
   CONSOLE_BRIDGE_logInform("Final trajectory is collision free");
-  return response.interface->isSuccessful();
+  //return response.interface->isSuccessful();
+  return trajectory;
 }
 }  // namespace zavrsni

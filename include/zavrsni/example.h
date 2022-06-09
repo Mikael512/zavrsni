@@ -33,7 +33,7 @@ public:
   Example(Example&&) = default;
   Example& operator=(Example&&) = default;
 
-  virtual bool run() = 0;
+  virtual tesseract_common::JointTrajectory run() = 0;
 
 protected:
   /** @brief Tesseract Manager Class (Required) */
