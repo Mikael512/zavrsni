@@ -9,7 +9,7 @@
   <arg name="ifopt" default="false"/>
   <arg name="debug" default="false"/>
   <arg name="testing" default="false"/>
-  <arg name="gazebo" default="false"/>
+  <arg name="gazebo" default="true"/>
   <arg name="gazebo_gui"   default ="true"/>
   <arg name="use_sim_time" default="true"/>
   <arg name="paused" default="true" />
