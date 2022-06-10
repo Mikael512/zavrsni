@@ -119,7 +119,7 @@ endmacro()
 
 
 
-add_example(${PROJECT_NAME}_program1 src/program1_node_extra.cpp) # dodao
+#add_example(${PROJECT_NAME}_program1 src/program1_node_extra.cpp) # dodao
 
 
 
@@ -134,7 +134,7 @@ install(
 configure_package(
   NAMESPACE tesseract
   TARGETS ${PROJECT_NAME}
-          ${PROJECT_NAME}_program1 # dodao
+          #${PROJECT_NAME}_program1 # dodao
           DEPENDENCIES
           tesseract_environment
           tesseract_command_language

@@ -52,5 +52,12 @@ int main(int argc, char** argv)
     plotter = std::make_shared<ROSPlotting>(env->getSceneGraph()->getRoot());
 
   Program1 example(env, plotter, ifopt, debug);
-  example.run();
+  auto trajectory = example.run();
+  auto joint_states = trajectory.states;
+  std::cout << "trajectory size = " << joint_states.size() << "\n";
+  for(auto joint_state : joint_states)
+  {
+    std::cout << "current time = " << joint_state.time << "\n";
+    std::cout << joint_state.position << "\n\n";
+  }
 }

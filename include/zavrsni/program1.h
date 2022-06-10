@@ -27,7 +27,7 @@ public:
   Program1(Program1&&) = default;
   Program1& operator=(Program1&&) = default;
 
-  bool run() override final;
+  tesseract_common::JointTrajectory run() override final;
 
 private:
   bool ifopt_;
