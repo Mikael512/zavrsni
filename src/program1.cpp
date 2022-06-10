@@ -64,13 +64,12 @@ tesseract_environment::Command::Ptr Program1::addSphere()
   return std::make_shared<tesseract_environment::AddLinkCommand>(link_sphere, joint_sphere);
 }
 
-<<<<<<< HEAD
-bool Program1::run()
-{ 
-=======
+
+
+
 tesseract_common::JointTrajectory Program1::run()
 {
->>>>>>> 274fd9d6b14e427277367dc97c098b4505b588d4
+
   //Add sphere to environment
   Command::Ptr cmd = addSphere();
   
