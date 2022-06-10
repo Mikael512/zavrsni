@@ -38,6 +38,8 @@ Program1::Program1(tesseract_environment::Environment::Ptr env,
 {
 }
 
+
+
 tesseract_environment::Command::Ptr Program1::addSphere()
 {
   // Add sphere to environment
@@ -63,7 +65,7 @@ tesseract_environment::Command::Ptr Program1::addSphere()
 }
 
 bool Program1::run()
-{
+{ 
   //Add sphere to environment
   Command::Ptr cmd = addSphere();
   if (!env_->applyCommand(cmd))
@@ -121,7 +123,7 @@ bool Program1::run()
 
   // Plan freespace from start
   // Assign a linear motion so cartesian is defined as the target
-  PlanInstruction plan_f0(wp1, PlanInstructionType::FREESPACE, "FREESPACE"); //ovo sam mijenjao iz linear upright
+  PlanInstruction plan_f0(wp1, PlanInstructionType::LINEAR, "UPRIGHT"); //ovo sam mijenjao iz linear upright
   plan_f0.setDescription("freespace_plan");
 
   // Add Instructions to program
