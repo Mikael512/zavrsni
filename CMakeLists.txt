@@ -21,6 +21,7 @@ find_package(tesseract_common REQUIRED)
 find_package(tesseract_support REQUIRED)
 find_package(trajopt_sqp REQUIRED)
 find_package(trajopt_ifopt REQUIRED)
+find_package(actionlib REQUIRED)
 find_package(
   PCL REQUIRED
   COMPONENTS core
@@ -64,6 +65,7 @@ macro(add_example test_name test_file)
 endmacro()
 
 add_example(${PROJECT_NAME}_program1_node src/program1_node.cpp) #dodao
+
 
 add_library(
   ${PROJECT_NAME}
@@ -118,7 +120,6 @@ macro(add_example example_name example_file)
 endmacro()
 
 
-
 #add_example(${PROJECT_NAME}_program1 src/program1_node_extra.cpp) # dodao
 
 
@@ -145,4 +146,5 @@ configure_package(
           tesseract_support
           trajopt_sqp
           trajopt_ifopt
+          actionlib
           "PCL REQUIRED COMPONENTS core features filters io segmentation surface")
