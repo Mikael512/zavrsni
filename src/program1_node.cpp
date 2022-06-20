@@ -40,6 +40,7 @@ moveit_msgs::RobotTrajectory tesseract2moveit(const tesseract_common::JointTraje
   moveit_msgs::RobotTrajectory moveit_traj;
   trajectory_msgs::JointTrajectory joint_traj;
   joint_traj.header.stamp = ros::Time::now();
+  joint_traj.joint_names = trajectory.states[0].joint_names;
 
   auto joint_states = trajectory.states;
   for(auto joint_state : joint_states)
@@ -89,8 +90,6 @@ int main(int argc, char** argv)
   std::cout << "move_group planning interface init!\n";
   MoveGroupInterface::Options opt(joint_model_group_name, "robot_description");
   auto move_group = std::make_shared<MoveGroupInterface> (opt);
-  std::cout << "init successfull!\n";  
-  
   std::cout << "init successfull!\n\n";
 
   move_group->getCurrentState();
@@ -123,7 +122,6 @@ int main(int argc, char** argv)
 
   auto err = move_group->execute(plan);
   //sleep(3.0);
-
   ros::Duration(10.0).sleep();
 
 
@@ -157,28 +155,6 @@ int main(int argc, char** argv)
     std::cout << joint_state.position << "\n\n";
   }
 
-  auto trajectory_msg = tesseract2moveit(trajectory);
-
-  /*
-  robot_trajectory::RobotTrajectory rt(move_group->getCurrentState()->getRobotModel(), "arm");
-
-  // Second get a RobotTrajectory from trajectory
-  rt.setRobotTrajectoryMsg(*move_group->getCurrentState(), trajectory_msg);
- 
-  
-  // Thrid create a IterativeParabolicTimeParameterization object
-  trajectory_processing::IterativeParabolicTimeParameterization iptp;
-
-  // Fourth compute computeTimeStamps
-  auto success = iptp.computeTimeStamps(rt);
-  ROS_INFO("Computed time stamp %s",success?"SUCCEDED":"FAILED");
-
-  // Get RobotTrajectory_msg from RobotTrajectory
-  rt.getRobotTrajectoryMsg(trajectory_msg);
-  */
-
-  // Finally plan and execute the trajectory
-  plan.trajectory_ = trajectory_msg;
-  //sleep(5.0);
+  plan.trajectory_ = tesseract2moveit(trajectory);
   move_group->execute(plan);
 }
