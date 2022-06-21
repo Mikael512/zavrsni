@@ -11,6 +11,10 @@ find_package(catkin REQUIRED COMPONENTS
   std_srvs
   tesseract_monitoring
   tesseract_rosutils
+  moveit_core
+  moveit_ros_planning
+  moveit_ros_planning_interface
+  moveit_ros_perception
 )
 find_package(tesseract_environment REQUIRED)
 find_package(tesseract_command_language REQUIRED)
