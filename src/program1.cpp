@@ -47,7 +47,7 @@ tesseract_environment::Command::Ptr Program1::addSphere()
 
   Visual::Ptr visual = std::make_shared<Visual>();
   visual->origin = Eigen::Isometry3d::Identity();
-  visual->origin.translation() = Eigen::Vector3d(0.5, 0.1, 0.4);
+  visual->origin.translation() = Eigen::Vector3d(0.5, -0.2, 0.4);
   visual->geometry = std::make_shared<tesseract_geometry::Sphere>(0.15);
   link_sphere.visual.push_back(visual);
 
@@ -93,22 +93,22 @@ tesseract_common::JointTrajectory Program1::run()
   joint_names.emplace_back("joint_7");
 
   Eigen::VectorXd joint_start_pos(7);
-  joint_start_pos(0) = 0.0;
-  joint_start_pos(1) = 0.67;
-  joint_start_pos(2) = 0.35;
-  joint_start_pos(3) = 1.0;
-  joint_start_pos(4) = 0.7;
-  joint_start_pos(5) = 1.57;
-  joint_start_pos(6) = 0.0;
+  joint_start_pos(0) = 0.73;
+  joint_start_pos(1) = 0.53;
+  joint_start_pos(2) = 0.0;
+  joint_start_pos(3) = 1.75;
+  joint_start_pos(4) = 0.066;
+  joint_start_pos(5) = 0.806;
+  joint_start_pos(6) = -0.06;
 
   Eigen::VectorXd joint_end_pos(7);
-  joint_end_pos(0) = 0.0;
-  joint_end_pos(1) = 0.67;
-  joint_end_pos(2) = -1.0;
-  joint_end_pos(3) = 2.1;
-  joint_end_pos(4) = 0.7;
-  joint_end_pos(5) = 1.57;
-  joint_end_pos(6) = 0.0;
+  joint_end_pos(0) = -0.07;
+  joint_end_pos(1) = 0.77;
+  joint_end_pos(2) = 0.0;
+  joint_end_pos(3) = 1.38;
+  joint_end_pos(4) = 0.02;
+  joint_end_pos(5) = 0.96; //0.806
+  joint_end_pos(6) = -0.06;
 
   env_->setState(joint_names, joint_start_pos);
 
@@ -129,6 +129,8 @@ tesseract_common::JointTrajectory Program1::run()
   PlanInstruction start_instruction(wp0, PlanInstructionType::START);
   program.setStartInstruction(start_instruction);
 
+  std::cout << joint_end_pos << "\n\n";
+  
   // Plan freespace from start
   // Assign a linear motion so cartesian is defined as the target
   PlanInstruction plan_f0(wp1, PlanInstructionType::LINEAR, "UPRIGHT"); //ovo sam mijenjao iz linear upright

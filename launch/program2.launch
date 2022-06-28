@@ -14,7 +14,7 @@
   <arg name="use_sim_time" default="true"/>
   <arg name="paused" default="true" />
   <arg name="prefix" default=""/>
-  <arg name="delay" default="2.0" />  
+  <arg name="delay" default="5.0" />  
   
   
 
@@ -36,7 +36,7 @@
   <!-- If needed, broadcast static tf for robot root -->
   <!-- <node pkg="tf" type="static_transform_publisher" name="virtual_joint_broadcaster_0" args="0 0 0 0 0 0 world base_link 100" launch-prefix="bash -c 'sleep $(arg delay); $0 $@' "/> -->
   <group ns="my_gen3">
-    <node pkg="zavrsni" type="zavrsni_program1_node" name="zavrsni_program1_node" output="screen" launch-prefix="bash -c 'sleep $(arg delay); $0 $@' ">
+    <node pkg="zavrsni" type="zavrsni_program2_node" name="zavrsni_program2_node" output="screen" launch-prefix="bash -c 'sleep $(arg delay); $0 $@' ">
       <param name="plotting" type="bool" value="$(arg plotting)"/>
       <param name="rviz" type="bool" value="$(arg rviz)"/>
       <param name="ifopt" type="bool" value="$(arg ifopt)"/>

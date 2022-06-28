@@ -68,10 +68,13 @@ macro(add_example test_name test_file)
 endmacro()
 
 add_example(${PROJECT_NAME}_program1_node src/program1_node.cpp) #dodao
+add_example(${PROJECT_NAME}_program2_node src/program2_node.cpp) #dodao
+
 
 add_library(
   ${PROJECT_NAME}
-  src/program1.cpp) #dodao
+  src/program1.cpp
+  src/program2.cpp) #dodao
 target_link_libraries(
   ${PROJECT_NAME}
   tesseract::tesseract_environment

@@ -37,13 +37,13 @@
         <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
             args="-urdf -param robot_description -model $(arg robot_name) -x $(arg x0) -y $(arg y0) -z $(arg z0)
                 -robot_namespace $(arg robot_name)
-                -J $(arg prefix)joint_1 0.0
-                -J $(arg prefix)joint_2 0.67
-                -J $(arg prefix)joint_3 0.35
-                -J $(arg prefix)joint_4 1.0
-                -J $(arg prefix)joint_5 0.7
-                -J $(arg prefix)joint_6 1.57
-                -J $(arg prefix)joint_7 0.0"  
+                -J $(arg prefix)joint_1 0.73
+                -J $(arg prefix)joint_2 0.53
+                -J $(arg prefix)joint_3 0.0
+                -J $(arg prefix)joint_4 1.75
+                -J $(arg prefix)joint_5 0.066
+                -J $(arg prefix)joint_6 0.806
+                -J $(arg prefix)joint_7 -0.06"  
             />
 
         <rosparam file="$(find kortex_control)/arms/$(arg arm)/$(arg dof)dof/config/joint_position_controllers.yaml" command="load" subst_value="true"/>

@@ -105,13 +105,13 @@ int main(int argc, char** argv)
   bool debug = false;
   
   // goto start joint position
-  std::vector<double> start_joint_pos{  0.0,
-                                        0.67,
-                                        0.35,
-                                        1.0,
-                                        0.7,
-                                        1.57,
-                                        0.0 };
+  std::vector<double> start_joint_pos{  0.73,
+                                        0.53,
+                                        0.0,
+                                        1.75,
+                                        0.066,
+                                        0.806,
+                                        -0.06};
 
   moveit::planning_interface::MoveGroupInterface::Plan plan;
 
@@ -122,7 +122,7 @@ int main(int argc, char** argv)
 
   auto err = move_group->execute(plan);
   //sleep(3.0);
-  ros::Duration(10.0).sleep();
+  ros::Duration(5.0).sleep();
 
 
   // Initial setup
