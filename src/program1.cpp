@@ -47,7 +47,7 @@ tesseract_environment::Command::Ptr Program1::addSphere()
 
   Visual::Ptr visual = std::make_shared<Visual>();
   visual->origin = Eigen::Isometry3d::Identity();
-  visual->origin.translation() = Eigen::Vector3d(0.5, -0.2, 0.4);
+  visual->origin.translation() = Eigen::Vector3d(0.45, -0.15, 0.22);
   visual->geometry = std::make_shared<tesseract_geometry::Sphere>(0.15);
   link_sphere.visual.push_back(visual);
 
@@ -166,9 +166,9 @@ tesseract_common::JointTrajectory Program1::run()
     auto plan_profile = std::make_shared<TrajOptIfoptDefaultPlanProfile>();
     plan_profile->joint_coeff = Eigen::VectorXd::Ones(7);
     plan_profile->cartesian_coeff = Eigen::VectorXd::Constant(6, 1, 5);
-    plan_profile->cartesian_coeff(0) = 0;
-    plan_profile->cartesian_coeff(1) = 0;
-    plan_profile->cartesian_coeff(2) = 0;
+    plan_profile->cartesian_coeff(0) = 0; //translation x
+    plan_profile->cartesian_coeff(1) = 0; //y
+    plan_profile->cartesian_coeff(2) = 0; //z
     planning_server.getProfiles()->addProfile<TrajOptIfoptPlanProfile>(
         profile_ns::TRAJOPT_IFOPT_DEFAULT_NAMESPACE, "UPRIGHT", plan_profile);
 

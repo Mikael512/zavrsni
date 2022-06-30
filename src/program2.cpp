@@ -86,11 +86,11 @@ Program2::Program2(tesseract_environment::Environment::Ptr env,
 tesseract_common::JointTrajectory Program2::run()
 {
   // Create octomap and add it to the local environment
-  Command::Ptr cmd = addPointCloud();
-  if (!env_->applyCommand(cmd)){
-    tesseract_common::JointTrajectory empty_traj;
-    return empty_traj;
-  }
+  //Command::Ptr cmd = addPointCloud();
+  //if (!env_->applyCommand(cmd)){
+  //  tesseract_common::JointTrajectory empty_traj;
+  //  return empty_traj;
+  //}
 
   if (plotter_ != nullptr)
     plotter_->waitForConnection();
@@ -105,16 +105,18 @@ tesseract_common::JointTrajectory Program2::run()
   joint_names.emplace_back("joint_6");
   joint_names.emplace_back("joint_7");
 
-  Eigen::VectorXd joint_pos(7);
-  joint_pos(0) = 0.42;
-  joint_pos(1) = 0.52;
-  joint_pos(2) = -0.11;
-  joint_pos(3) = 0.69;
-  joint_pos(4) = 0.20;
-  joint_pos(5) = 1.21;
-  joint_pos(6) = 0.0;
 
-  env_->setState(joint_names, joint_pos);
+
+  Eigen::VectorXd zero_pos(7);
+  zero_pos(0) = 0.73;
+  zero_pos(1) = 0.53;
+  zero_pos(2) = 0.0;
+  zero_pos(3) = 1.75;
+  zero_pos(4) = 0.066;
+  zero_pos(5) = 0.806;
+  zero_pos(6) = -0.06;
+
+  env_->setState(joint_names, zero_pos);
 
   if (debug_)
     console_bridge::setLogLevel(console_bridge::LogLevel::CONSOLE_BRIDGE_LOG_DEBUG);
@@ -124,40 +126,72 @@ tesseract_common::JointTrajectory Program2::run()
       "cartesian_program", CompositeInstructionOrder::ORDERED, ManipulatorInfo("manipulator", "base_link", "tool_frame")); //promjena
 
   // Start Joint Position for the program
-  Waypoint wp0 = StateWaypoint(joint_names, joint_pos);
+  Waypoint wp0 = StateWaypoint(joint_names, zero_pos);
+
+  Eigen::Isometry3d matrica1;
+  matrica1.linear() = Eigen::Quaterniond(0.0, 0.0, 1.0, 0.0).matrix();
+  matrica1.translation() = Eigen::Vector3d(0.2, -0.2, 0.5);  // Offset for the table
+  Waypoint wp1 = CartesianWaypoint(matrica1);
+
+  Eigen::Isometry3d matrica12;
+  matrica12.linear() = Eigen::Quaterniond(0.0, 0.0, 1.0, 0.0).matrix();
+  matrica12.translation() = Eigen::Vector3d(0.4, -0.2, 0.5);  // Offset for the table
+  Waypoint wp12 = CartesianWaypoint(matrica12);
+
+  Eigen::Isometry3d matrica3;
+  matrica3.linear() = Eigen::Quaterniond(0.0, 0.0, 1.0, 0.0).matrix();
+  matrica3.translation() = Eigen::Vector3d(0.4, -0.3, 0.5);  // Offset for the table
+  Waypoint wp3 = CartesianWaypoint(matrica3);
+
+  Eigen::Isometry3d matrica34;
+  matrica34.linear() = Eigen::Quaterniond(0.0, 0.0, 1.0, 0.0).matrix();
+  matrica34.translation() = Eigen::Vector3d(0.2, -0.3, 0.5);  // Offset for the table
+  Waypoint wp34 = CartesianWaypoint(matrica34);
+
+  Eigen::Isometry3d matrica5;
+  matrica5.linear() = Eigen::Quaterniond(0.0, 0.0, 1.0, 0.0).matrix();
+  matrica5.translation() = Eigen::Vector3d(0.2, -0.4, 0.5);  // Offset for the table
+  Waypoint wp5 = CartesianWaypoint(matrica5);
+
+  Eigen::Isometry3d matrica56;
+  matrica56.linear() = Eigen::Quaterniond(0.0, 0.0, 1.0, 0.0).matrix();
+  matrica56.translation() = Eigen::Vector3d(0.4, -0.4, 0.5);  // Offset for the table
+  Waypoint wp56 = CartesianWaypoint(matrica56);
+
+  Waypoint wp7 = StateWaypoint(joint_names, zero_pos);
+
+
   PlanInstruction start_instruction(wp0, PlanInstructionType::START);
   program.setStartInstruction(start_instruction);
 
-  // Create cartesian waypoint
-  Waypoint wp1 = CartesianWaypoint(Eigen::Isometry3d::Identity() * Eigen::Translation3d(0.5, 0.5, 0.62) *
-                                   Eigen::Quaterniond(0, 0, 1.0, 0));
+  PlanInstruction plan_1(wp1, PlanInstructionType::FREESPACE, "FREESPACE");
+  plan_1.setDescription("to_start");
 
-  Waypoint wp2 = CartesianWaypoint(Eigen::Isometry3d::Identity() * Eigen::Translation3d(0.5, 0.7, 0.62) *
-                                   Eigen::Quaterniond(0, 0, 1.0, 0));
+  PlanInstruction plan_2(wp12, PlanInstructionType::LINEAR, "LINEAR");
+  plan_2.setDescription("grid");
 
-  Waypoint wp3 = CartesianWaypoint(Eigen::Isometry3d::Identity() * Eigen::Translation3d(0.5, 0.1, 0.75) *
-                                   Eigen::Quaterniond(0.0, 1.0, 0.0, 0));
+  PlanInstruction plan_3(wp3, PlanInstructionType::FREESPACE, "FREESPACE");
+  plan_3.setDescription("grid");
 
-  // Plan freespace from start
-  PlanInstruction plan_f0(wp1, PlanInstructionType::FREESPACE, "freespace_profile");
-  plan_f0.setDescription("from_start_plan");
+  PlanInstruction plan_4(wp34, PlanInstructionType::LINEAR, "LINEAR");
+  plan_4.setDescription("grid");
 
-  // Plan linear move
-  PlanInstruction plan_c0(wp2, PlanInstructionType::LINEAR, "RASTER");
+  PlanInstruction plan_5(wp5, PlanInstructionType::FREESPACE, "FREESPACE");
+  plan_5.setDescription("grid");
 
-  // Plan freespace to end
-  PlanInstruction plan_f1(wp3, PlanInstructionType::FREESPACE, "START");
-  plan_f1.setDescription("to_end_plan");
+  PlanInstruction plan_6(wp56, PlanInstructionType::LINEAR, "LINEAR");
+  plan_6.setDescription("grid");
 
-  //nesto moje ...
-  PlanInstruction plan_miki(wp0, PlanInstructionType::LINEAR, "RASTER");
-  plan_miki.setDescription("mikijev_jednostavni_plan");
+  PlanInstruction plan_7(wp7, PlanInstructionType::FREESPACE, "FREESPACE");
+  plan_7.setDescription("to_end");
 
-  // Add Instructions to program
-  program.push_back(plan_f0);
-  program.push_back(plan_c0);
-  program.push_back(plan_f1);
-  program.push_back(plan_miki);
+  program.push_back(plan_1);
+  program.push_back(plan_2);
+  program.push_back(plan_3);
+  program.push_back(plan_4);
+  program.push_back(plan_5);
+  program.push_back(plan_6);
+  program.push_back(plan_7);
 
   CONSOLE_BRIDGE_logInform("basic cartesian plan example");
 
